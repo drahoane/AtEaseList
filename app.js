@@ -10,12 +10,20 @@ class TodoList {
     constructor(todos) {
         this.todos = todos;
     }
-  
+    
+    /**
+     * adds new todo into 'database'
+     */
     add(todoText, dateText) {
         const newTodo = new Todo(todoText, 'active', dateText);
         this.todos.push(newTodo);
     }
 
+    /**
+     * updates one or more attributes of an existing todo
+     * updates the 'database' in local storage
+     * rerenders the list of todos
+     */
     edit(index, todoText, dateText) {
         const todo = this.todos[index];
         if (!todoText) todoText = todo.text; 
@@ -25,6 +33,12 @@ class TodoList {
         this.render();
     }
   
+    /**
+     * removes the todo from the list
+     * updates the 'database' in local storage
+     * rerenders the list of todos
+     * all of these actions after the css animation for class .removing is done
+     */
     delete(index) {    
         setTimeout(() => {
             this.todos.splice(index, 1);
@@ -35,6 +49,11 @@ class TodoList {
         }, 1500);    
     }
   
+    /**
+     * toggles the attribute state of the todo
+     * updates the 'database' in local storage
+     * rerenders the list of todos
+     */
     toggleState(index) {
         const todo = this.todos[index];
         todo.state = todo.state === 'done' ? 'active' : 'done';
@@ -42,10 +61,18 @@ class TodoList {
         this.render();
     }
   
+    /**
+     * rewrites the list of todos as keeping only those with state 'active' 
+     */
     clearAll() {
         this.todos = this.todos.filter(todo => todo.state !== 'done');
     }
 
+    /**
+     * (re)renders the whole todo list
+     * for each todo creates elements and pushes them into html to make them visible for the user
+     * adds event listeners to checkboxes for toggle change, for edit, for delete and for drag and drop actions
+     */
     render() {
         const todoList = document.getElementById('list');
         // Clear the todo list
@@ -114,15 +141,16 @@ let items = document.getElementsByTagName('li');
 
 // Render the initial todo list
 todoList.render();
-//renderTodoList();
   
 // Add event listeners
 addBtn.addEventListener('click', () => {
+    //XSS safe input
     const todoText = escapeHtml(todoInput.value.trim());
     const dateText = dateInput.value;
 
     if (!todoText) return;
 
+    //create svg loading circle
     createSvg();
   
     todoList.add(todoText, dateText);
@@ -133,7 +161,7 @@ addBtn.addEventListener('click', () => {
     // Update local storage
     localStorage.setItem('todos', JSON.stringify(todoList.todos));
   
-    // Re-render the todo list
+    // Rerender the todo list
     todoList.render();
 });
 clearBtn.addEventListener('click', () => {
@@ -160,6 +188,9 @@ dateInput.addEventListener('keypress', function(e) {
     }
 });
 
+/**
+ * functions handling drag and drop API
+ */
 function handleDragStart(e, index) {
     e.dataTransfer.setData('text/plain', index);
 }
@@ -177,6 +208,9 @@ function handleDrop(e, index) {
     todoList.render();
 }
 
+/**
+ * returns XSS safe inputs
+ */
 function escapeHtml(text) {
     var map = {
       '&': '&amp;',
@@ -189,6 +223,10 @@ function escapeHtml(text) {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
 
+/**
+ * filters todos based on their current state using fragmentation identifier
+ * rerenders temporary list of those filtered todos
+ */
 function filterTodos(hash) {
     let filteredList = new TodoList(todoList.todos);
     if (hash === 'active') {
@@ -199,9 +237,12 @@ function filterTodos(hash) {
     filteredList.render();
 }
 
+// listener for hash change
 window.addEventListener('hashchange', () => filterTodos(window.location.hash.slice(1)));  
 
-
+/**
+ * creates loading circle animation when new todo is added
+ */
 function createSvg() {
     // Create the SVG element
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
