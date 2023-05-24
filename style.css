@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  padding: 4px;
 }
 
 body {
@@ -16,7 +17,7 @@ h1 {
   text-align: center;
 }
 
-section section {
+section #sec {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -33,7 +34,7 @@ section section {
   align-items: center;
 }
 
-section section input {
+section #sec input {
   padding: 6px 12px;
   font-size: 16px;
   font-weight: 400;
@@ -45,7 +46,6 @@ section section input {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border-radius: 4px;
   -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
   transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
   -o-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -54,13 +54,17 @@ section section input {
   
 }
 
-section section input:focus{
+section #sec input:focus{
   color: #212529;
   background-color: #fff;
   border-color: #86b7fe;
   outline: 0;
   -webkit-box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
   box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+
+.done label {
+  text-decoration: line-through;
 }
 
 ul {
@@ -92,6 +96,10 @@ li {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+}
+
+li label {
+  transform: matrix(1,-0.1,0.3,0.9,0,0);
 }
 
 li:hover {
@@ -187,7 +195,7 @@ input[type='checkbox'] {
 }
 
 .done input[type='checkbox']::before {
-  content: "✔ ";
+  content: "âś” ";
   position: relative;
   font-size: 25px;
 }
@@ -204,7 +212,7 @@ input[type='checkbox'] {
   background: #FCFCFD;
   box-shadow: 0px 2px 4px rgb(45 35 66 / 40%), 0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px #6200ee;
   height: 48px;
-  padding: 12px 32px;
+  padding: 12px 20px 20px 12px;
   font-size: 18px;
   border-radius: 6px;
   color: #36395a;
